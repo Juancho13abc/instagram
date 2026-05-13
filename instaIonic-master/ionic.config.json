@@ -1,0 +1,7 @@
+{
+  "name": "instaIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

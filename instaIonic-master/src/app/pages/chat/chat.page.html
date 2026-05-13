@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar class="chat-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/chats" class="chat-back"></ion-back-button>
+    </ion-buttons>
+    <div class="chat-header-user">
+      <div class="chat-header-avatar">
+        <img [src]="imgUrl(otherUser?.profile?.avatar || '')"
+             (error)="$event.target.src='https://placehold.co/64x64'" />
+      </div>
+      <div class="chat-header-name">
+        {{ otherUser?.profile?.username || otherUser?.name || 'Chat' }}
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-content" [scrollY]="true">
+  <div class="messages-wrap" #messageList>
+
+    <!-- Empty state -->
+    <div class="chat-empty" *ngIf="messages.length === 0">
+      <div class="empty-avatar">
+        <img [src]="imgUrl(otherUser?.profile?.avatar || '')"
+             (error)="$event.target.src='https://placehold.co/64x64'" />
+      </div>
+      <div class="empty-username">{{ otherUser?.profile?.username || otherUser?.name }}</div>
+      <p class="empty-hint">Envía un mensaje para iniciar la conversación.</p>
+    </div>
+
+    <!-- Messages -->
+    <div class="msg-group" *ngFor="let m of messages" [class.own]="isOwnMessage(m)">
+
+      <!-- Delete button (own messages, shown on tap) -->
+      <button class="msg-delete-btn"
+              *ngIf="isOwnMessage(m) && activeMessageId === m.id"
+              (click)="deleteMessage(m)">
+        <ion-icon name="trash-outline"></ion-icon>
+        Eliminar
+      </button>
+
+      <div class="msg-bubble-wrap" [class.own]="isOwnMessage(m)">
+        <div class="msg-bubble"
+             [class.own]="isOwnMessage(m)"
+             [class.other]="!isOwnMessage(m)"
+             (click)="toggleMessageMenu(m)">
+          {{ m.content }}
+        </div>
+        <div class="msg-time">{{ m.created_at | date:'shortTime' }}</div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<!-- Composer -->
+<div class="chat-composer">
+  <div class="composer-input-wrap">
+    <ion-input
+      [(ngModel)]="newMsg"
+      placeholder="Mensaje..."
+      class="chat-input"
+      (keyup.enter)="send()">
+    </ion-input>
+  </div>
+  <button class="send-btn" (click)="send()" [class.active]="newMsg.trim()">
+    <ion-icon name="send-outline"></ion-icon>
+  </button>
+</div>

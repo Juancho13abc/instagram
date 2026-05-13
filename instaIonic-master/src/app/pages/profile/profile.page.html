@@ -1,0 +1,188 @@
+<ion-header>
+  <ion-toolbar class="insta-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" class="insta-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="profile-toolbar-title">
+      {{ user?.profile?.username || user?.name || 'Perfil' }}
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="isOwnProfile()">
+      <button class="icon-btn" (click)="openSettings()">
+        <ion-icon name="settings-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile-content" [scrollY]="true">
+
+  <!-- Profile top -->
+  <div class="profile-top">
+
+    <div class="avatar-stats-row">
+      <div class="profile-avatar-wrap">
+        <div class="avatar-gradient-ring" [class.own]="isOwnProfile()">
+          <img [src]="imgUrl(user?.profile?.avatar || '')"
+               (error)="$event.target.src='https://placehold.co/200x200?text=Perfil'" />
+        </div>
+        <button *ngIf="isOwnProfile()" class="change-photo-btn" (click)="goToEdit()">
+          <ion-icon name="camera-outline"></ion-icon>
+        </button>
+      </div>
+
+      <div class="stats-group">
+        <div class="stat-box">
+          <div class="stat-num">{{ posts.length }}</div>
+          <div class="stat-lbl">publicaciones</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">{{ user?.followers_count || 0 }}</div>
+          <div class="stat-lbl">seguidores</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">{{ user?.following_count || 0 }}</div>
+          <div class="stat-lbl">seguidos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-bio">
+      <div class="profile-fullname">{{ user?.name }}</div>
+      <div class="profile-bio-text" *ngIf="user?.bio || user?.profile?.bio">
+        {{ user?.bio || user?.profile?.bio }}
+      </div>
+    </div>
+
+    <div class="profile-action-row">
+      <ng-container *ngIf="isOwnProfile()">
+        <button class="insta-action-btn outline" (click)="goToEdit()">Editar perfil</button>
+        <button class="insta-action-btn outline icon-only" (click)="viewStories()">
+          <ion-icon name="film-outline"></ion-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!isOwnProfile()">
+        <button class="insta-action-btn primary" *ngIf="!following"
+                [disabled]="loadingFollow" (click)="toggleFollow()">Seguir</button>
+        <button class="insta-action-btn outline" *ngIf="following"
+                [disabled]="loadingFollow" (click)="toggleFollow()">Siguiendo</button>
+        <button class="insta-action-btn outline" (click)="goToChat()">Mensaje</button>
+        
+        <!-- Friend management buttons -->
+        <button class="insta-action-btn outline icon-only" 
+                *ngIf="friendshipStatus === 'none'"
+                [disabled]="loadingFriend" (click)="addFriend()"
+                title="Agregar amigo">
+          <ion-icon name="person-add-outline"></ion-icon>
+        </button>
+        <button class="insta-action-btn outline icon-only pending" 
+                *ngIf="friendshipStatus === 'pending'"
+                [disabled]="true"
+                title="Solicitud pendiente">
+          <ion-icon name="time-outline"></ion-icon>
+        </button>
+        <button class="insta-action-btn outline icon-only danger" 
+                *ngIf="friendshipStatus === 'friends'"
+                [disabled]="loadingFriend" (click)="removeFriend()"
+                title="Eliminar amigo">
+          <ion-icon name="person-remove-outline"></ion-icon>
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="stories-highlight" *ngIf="!isOwnProfile() && posts.length > 0">
+      <div class="story-highlight-item" (click)="viewStories()">
+        <div class="highlight-ring">
+          <img [src]="imgUrl(posts[0]?.image || '')"
+               (error)="$event.target.src='https://placehold.co/64x64'" />
+        </div>
+        <div class="highlight-label">Historias</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts / Saved tabs -->
+  <div class="posts-tab-row">
+    <button class="posts-tab active">
+      <ion-icon name="grid-outline"></ion-icon>
+    </button>
+    <button class="posts-tab">
+      <ion-icon name="bookmark-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Posts grid -->
+  <div class="posts-grid" *ngIf="posts.length > 0">
+    <div class="grid-cell" *ngFor="let p of posts">
+      <img [src]="imgUrl(p.image)"
+           (error)="$event.target.src='https://placehold.co/300x300?text=Post'" />
+      <!-- Own profile: show options button on each post -->
+      <button class="grid-post-menu-btn" *ngIf="isOwnProfile()"
+              (click)="openPostMenu(p, $event)">
+        <ion-icon name="ellipsis-horizontal"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="empty-grid" *ngIf="posts.length === 0">
+    <ion-icon name="camera-outline" class="empty-grid-icon"></ion-icon>
+    <h3>Sin publicaciones</h3>
+    <p *ngIf="isOwnProfile()">Comparte tu primera foto.</p>
+    <p *ngIf="!isOwnProfile()">Esta persona no ha publicado aún.</p>
+  </div>
+
+  <!-- ── Edit post modal ── -->
+  <div class="sheet-overlay" *ngIf="editingPost" (click)="cancelEdit()"></div>
+  <div class="edit-modal" *ngIf="editingPost" (click)="$event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="edit-modal-title">Editar publicación</div>
+    <div class="edit-modal-body">
+      <img class="edit-preview-img" [src]="imgUrl(editingPost.image)"
+           (error)="$event.target.src='https://placehold.co/300x300?text=Post'" />
+      <div class="edit-fields">
+        <textarea class="edit-caption-input" [(ngModel)]="editCaption"
+                  placeholder="Descripción..." rows="3"></textarea>
+        <input class="edit-location-input" [(ngModel)]="editLocation"
+               placeholder="📍 Ubicación (opcional)" />
+      </div>
+    </div>
+    <div class="edit-modal-actions">
+      <button class="edit-cancel-btn" (click)="cancelEdit()">Cancelar</button>
+      <button class="edit-save-btn" (click)="saveEdit()">Guardar</button>
+    </div>
+  </div>
+
+  <!-- ── Settings bottom sheet ── -->
+  <div class="sheet-overlay" *ngIf="showSettingsSheet" (click)="closeSettings()"></div>
+  <div class="options-sheet" *ngIf="showSettingsSheet">
+    <div class="sheet-handle"></div>
+    <button class="options-row" (click)="goToEdit()">
+      <ion-icon name="create-outline"></ion-icon>
+      Editar perfil
+    </button>
+    <div class="options-divider"></div>
+    <button class="options-row danger" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      Cerrar sesión
+    </button>
+    <div class="options-divider"></div>
+    <button class="options-row cancel-row" (click)="closeSettings()">Cancelar</button>
+  </div>
+
+  <!-- ── Post options bottom sheet ── -->
+  <div class="sheet-overlay" *ngIf="menuPost" (click)="closePostMenu()"></div>
+  <div class="options-sheet" *ngIf="menuPost">
+    <div class="sheet-handle"></div>
+    <button class="options-row" (click)="startEdit(menuPost)">
+      <ion-icon name="create-outline"></ion-icon>
+      Editar descripción
+    </button>
+    <div class="options-divider"></div>
+    <button class="options-row danger" (click)="deletePost(menuPost)">
+      <ion-icon name="trash-outline"></ion-icon>
+      Eliminar publicación
+    </button>
+    <div class="options-divider"></div>
+    <button class="options-row cancel-row" (click)="closePostMenu()">Cancelar</button>
+  </div>
+
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar class="insta-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/my-profile" class="insta-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="edit-title">Editar perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" class="save-btn">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="edit-content" [scrollY]="true">
+
+  <!-- Avatar section -->
+  <div class="avatar-section">
+    <div class="avatar-wrap">
+      <div class="edit-avatar-ring">
+        <img [src]="avatarPreview || 'https://placehold.co/200x200?text=Perfil'"
+             (error)="$event.target.src='https://placehold.co/200x200?text=Perfil'" />
+      </div>
+      <label class="change-photo-label">
+        <input type="file" (change)="onFileChange($event)" accept="image/*" hidden />
+        Cambiar foto de perfil
+      </label>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Form fields -->
+  <div class="field-group">
+    <div class="field-row">
+      <div class="field-label">Nombre</div>
+      <ion-input class="field-input" [(ngModel)]="name" placeholder="Tu nombre"></ion-input>
+    </div>
+    <div class="field-divider"></div>
+    <div class="field-row">
+      <div class="field-label">Username</div>
+      <ion-input class="field-input" [(ngModel)]="username" placeholder="usuario123"></ion-input>
+    </div>
+    <div class="field-divider"></div>
+    <div class="field-row">
+      <div class="field-label">Biografía</div>
+      <ion-input class="field-input" [(ngModel)]="bio" placeholder="Cuéntanos sobre ti..."></ion-input>
+    </div>
+  </div>
+
+</ion-content>

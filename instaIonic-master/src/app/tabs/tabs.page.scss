@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  height: 100%;
+
+  ion-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  ion-router-outlet {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .insta-tab-bar {
+    --background: #000000;
+    --color: #8e8e8e;
+    --color-selected: #ffffff;
+    border-top: 0.5px solid #262626;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+
+    ion-tab-button {
+      --color: #8e8e8e;
+      --color-selected: #ffffff;
+      --ripple-color: transparent;
+      position: relative;
+
+      ion-icon {
+        font-size: 26px;
+      }
+
+      ion-badge {
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        background: #ed4956;
+        color: #fff;
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 10px;
+        font-weight: 700;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<ion-tabs (ionTabsDidChange)="tabChanged()">
+  <ion-router-outlet></ion-router-outlet>
+  <ion-tab-bar slot="bottom" class="insta-tab-bar">
+    <ion-tab-button tab="feed">
+      <ion-icon name="home-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="search">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-badge *ngIf="reqs > 0">{{ reqs }}</ion-badge>
+    </ion-tab-button>
+    <ion-tab-button tab="new-post">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="chats">
+      <ion-icon name="paper-plane-outline"></ion-icon>
+      <ion-badge *ngIf="msgs > 0">{{ msgs }}</ion-badge>
+    </ion-tab-button>
+    <ion-tab-button tab="my-profile">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

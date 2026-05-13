@@ -1,0 +1,55 @@
+<ion-content class="story-content" [scrollY]="false">
+
+  <!-- Empty state -->
+  <div class="story-empty" *ngIf="stories.length === 0">
+    <ion-icon name="close-outline" class="close-btn" (click)="close()"></ion-icon>
+    <div class="empty-msg">
+      <p>No hay historias disponibles.</p>
+    </div>
+  </div>
+
+  <!-- Story viewer -->
+  <div class="story-viewer" *ngIf="stories.length > 0">
+
+    <!-- Background image -->
+    <div class="story-bg">
+      <img [src]="stories[currentIndex]?.image"
+           (error)="$event.target.src='https://placehold.co/600x900?text=Historia'" />
+    </div>
+
+    <!-- Progress bars -->
+    <div class="progress-bars">
+      <div class="progress-seg" *ngFor="let s of stories; let i = index">
+        <div class="progress-fill"
+             [style.width]="i < currentIndex ? '100%' : (i === currentIndex ? progress + '%' : '0%')">
+        </div>
+      </div>
+    </div>
+
+    <!-- Header: user info + close -->
+    <div class="story-header">
+      <div class="story-user-info" (click)="close()">
+        <div class="story-user-avatar">
+          <img [src]="stories[currentIndex]?.user?.profile?.avatar || 'https://placehold.co/64x64'"
+               (error)="$event.target.src='https://placehold.co/64x64'" />
+        </div>
+        <span class="story-username">
+          {{ stories[currentIndex]?.user?.profile?.username || stories[currentIndex]?.user?.name }}
+        </span>
+        <span class="story-time">hace un momento</span>
+      </div>
+      <ion-icon name="close-outline" class="story-close" (click)="close()"></ion-icon>
+    </div>
+
+    <!-- Touch zones -->
+    <div class="tap-left" (click)="tapLeft($event)"></div>
+    <div class="tap-right" (click)="tapRight($event)"></div>
+
+    <!-- Caption overlay -->
+    <div class="story-caption" *ngIf="stories[currentIndex]?.caption">
+      {{ stories[currentIndex].caption }}
+    </div>
+
+  </div>
+
+</ion-content>

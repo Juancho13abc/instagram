@@ -1,0 +1,42 @@
+:host {
+	ion-content {
+		--background: transparent;
+	}
+
+	ion-segment {
+		margin-bottom: 8px;
+		--background: rgba(255, 255, 255, 0.06);
+		border-radius: 16px;
+	}
+
+	ion-segment-button {
+		--color: #9b9b9b;
+		--color-checked: #ffffff;
+		--background-checked: linear-gradient(135deg, #feda75 0%, #fa7e1e 25%, #d62976 55%, #962fbf 80%, #4f5bd5 100%);
+	}
+
+	ion-item,
+	ion-button,
+	ion-img {
+		animation: rise 0.45s ease both;
+	}
+
+	ion-grid {
+		margin-top: 8px;
+	}
+
+	ion-button {
+		min-height: 64px;
+		--background: linear-gradient(135deg, #feda75 0%, #fa7e1e 25%, #d62976 55%, #962fbf 80%, #4f5bd5 100%);
+	}
+
+	ion-img {
+		border-radius: 20px;
+		box-shadow: 0 18px 34px rgba(0, 0, 0, 0.3);
+	}
+
+	@keyframes rise {
+		from { opacity: 0; transform: translateY(10px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+}

@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar class="insta-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" class="insta-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="notifications-toolbar-title">Notificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="notifications-content" [scrollY]="true">
+
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <!-- Notifications list -->
+  <ion-list *ngIf="!loading && notifications.length > 0" class="notifications-list">
+    <ion-item *ngFor="let notif of notifications" class="notification-item" 
+              [class.friend-request]="notif.type === 'friend_request'"
+              [class.message]="notif.type === 'message'"
+              [class.like]="notif.type === 'like'"
+              [class.comment]="notif.type === 'comment'">
+      
+      <!-- Avatar -->
+      <ion-avatar slot="start" class="notif-avatar" (click)="goToProfile(notif)">
+        <img [src]="imgUrl(notif.sender?.profile?.avatar || notif.actor?.profile?.avatar || '')"
+             (error)="$event.target.src='https://placehold.co/48x48?text=User'" />
+      </ion-avatar>
+
+      <!-- Content -->
+      <ion-label class="notif-label" (click)="goToProfile(notif)">
+        <div class="notif-message">{{ getNotificationMessage(notif) }}</div>
+        <div class="notif-time">{{ timeAgo(notif.created_at) }}</div>
+      </ion-label>
+
+      <!-- Action buttons based on type -->
+      <div slot="end" class="notif-actions">
+        <!-- Friend request actions -->
+        <ng-container *ngIf="notif.type === 'friend_request'">
+          <button class="action-btn accept"
+                  [disabled]="acting[notif.id]"
+                  (click)="acceptFriendRequest(notif)">
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="action-btn reject"
+                  [disabled]="acting[notif.id]"
+                  (click)="rejectFriendRequest(notif)">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </ng-container>
+
+        <!-- Message action -->
+        <ng-container *ngIf="notif.type === 'message'">
+          <button class="action-btn reply"
+                  (click)="goToMessage(notif)">
+            <ion-icon name="paper-plane-outline"></ion-icon>
+          </button>
+        </ng-container>
+
+        <!-- Like/Comment: no extra button needed, tap avatar/name to go to profile -->
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <!-- Empty state -->
+  <div class="empty-container" *ngIf="!loading && notifications.length === 0">
+    <ion-icon name="notifications-outline" class="empty-icon"></ion-icon>
+    <h3>Sin notificaciones</h3>
+    <p>Aún no tienes notificaciones nuevas</p>
+  </div>
+
+</ion-content>

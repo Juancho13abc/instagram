@@ -1,0 +1,151 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+html,
+body {
+	height: 100%;
+	background: #000000;
+	color: #ffffff;
+}
+
+body {
+	font-family: var(--ion-font-family);
+}
+
+ion-app,
+ion-content {
+	background: #000000;
+	--background: #000000;
+	color: #ffffff;
+}
+
+ion-app,
+ion-router-outlet,
+.ion-page,
+ion-content {
+	height: 100%;
+}
+
+html,
+body,
+ion-app {
+	overflow: hidden;
+	overscroll-behavior-y: none;
+}
+
+/* Prevent the outlet container from swallowing taps; let routed pages receive them */
+ion-router-outlet {
+	pointer-events: none;
+}
+
+ion-router-outlet > * {
+	pointer-events: auto;
+}
+
+ion-toolbar {
+	--background: #000000;
+	--border-color: #262626;
+	--color: #ffffff;
+}
+
+ion-tab-bar {
+	--background: #000000;
+	--color: #8e8e8e;
+	--color-selected: #ffffff;
+	border-top: 0.5px solid #262626;
+}
+
+ion-tab-button {
+	--color: #8e8e8e;
+	--color-selected: #ffffff;
+	--ripple-color: transparent;
+}
+
+ion-button {
+	--border-radius: 8px;
+	--box-shadow: none;
+	text-transform: none;
+	font-weight: 700;
+	--color: #ffffff;
+}
+
+ion-item {
+	--background: #1a1a1a;
+	--border-color: #262626;
+	--padding-start: 14px;
+	--inner-padding-end: 14px;
+	--color: #ffffff;
+}
+
+ion-input {
+	--padding-top: 10px;
+	--padding-bottom: 10px;
+	--color: #ffffff;
+	--placeholder-color: #8e8e8e;
+}
+
+ion-searchbar {
+	--background: #1a1a1a;
+	--border-radius: 12px;
+	--box-shadow: none;
+	--color: #ffffff;
+	--placeholder-color: #8e8e8e;
+	--icon-color: #8e8e8e;
+}
+
+ion-back-button {
+	--color: #ffffff;
+}
+
+ion-content::part(scroll) {
+	padding-bottom: 24px;
+	overflow-y: auto !important;
+	overflow-x: hidden !important;
+	-webkit-overflow-scrolling: touch !important;
+	touch-action: auto !important;
+	pointer-events: auto;
+}
+
+@keyframes floatIn {
+	from { opacity: 0; transform: translateY(14px) scale(0.98); }
+	to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-in {
+	animation: floatIn 0.6s ease both;
+}
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';

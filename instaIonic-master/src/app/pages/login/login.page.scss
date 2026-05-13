@@ -1,0 +1,244 @@
+:host {
+  .login-content {
+    --background: #000;
+  }
+
+  // ── Shared layout ──
+  .insta-login,
+  .insta-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px 24px;
+    min-height: calc(100vh - 80px);
+  }
+
+  // ── Logo ──
+  .logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .insta-logo-icon {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .app-name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .register-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8e8e8e;
+    text-align: center;
+    margin: -16px 0 24px;
+    line-height: 1.45;
+    padding: 0 8px;
+  }
+
+  // ── Fields ──
+  .fields-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .insta-field {
+    position: relative;
+    width: 100%;
+  }
+
+  .insta-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1a1a1a;
+    border: 1px solid #363636;
+    border-radius: 6px;
+    padding: 14px 16px;
+    color: #fff;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+      color: #8e8e8e;
+    }
+
+    &:focus {
+      border-color: #555;
+    }
+  }
+
+  .show-pass-btn {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  // ── Forgot password ──
+  .forgot-row {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 16px;
+  }
+
+  .forgot-btn {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  // ── Error ──
+  .error-msg {
+    width: 100%;
+    color: #ff3b30;
+    font-size: 0.83rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  // ── Primary button ──
+  .insta-btn-primary {
+    width: 100%;
+    background: #0095f6;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 13px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-bottom: 16px;
+
+    &:active {
+      opacity: 0.85;
+    }
+  }
+
+  // ── OR divider ──
+  .or-divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #262626;
+    }
+
+    span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #8e8e8e;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // ── Facebook button ──
+  .fb-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #0095f6;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 10px;
+    cursor: pointer;
+
+    &:active {
+      opacity: 0.75;
+    }
+  }
+
+  .fb-icon {
+    width: 18px;
+    height: 18px;
+    fill: #0095f6;
+  }
+
+  // ── Terms ──
+  .terms-text {
+    font-size: 0.78rem;
+    color: #8e8e8e;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .terms-link {
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+
+  // ── Bottom switcher ──
+  .bottom-switch {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: #000;
+    border-top: 0.5px solid #262626;
+    text-align: center;
+    font-size: 0.88rem;
+    color: #8e8e8e;
+  }
+
+  .switch-link {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+  }
+}

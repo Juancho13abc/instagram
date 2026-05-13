@@ -1,0 +1,123 @@
+<ion-content class="login-content" [scrollY]="true">
+
+  <!-- Login form -->
+  <div class="insta-login" *ngIf="!isRegister">
+
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="insta-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+        </svg>
+      </div>
+      <h1 class="app-name">Social Studio</h1>
+    </div>
+
+    <!-- Fields -->
+    <div class="fields-block">
+      <div class="insta-field">
+        <input
+          class="insta-input"
+          type="email"
+          placeholder="Correo electrónico"
+          [(ngModel)]="email"
+          autocomplete="email"
+        />
+      </div>
+      <div class="insta-field">
+        <input
+          class="insta-input"
+          [type]="showPass ? 'text' : 'password'"
+          placeholder="Contraseña"
+          [(ngModel)]="password"
+        />
+        <button class="show-pass-btn" type="button" (click)="showPass = !showPass">
+          {{ showPass ? 'Ocultar' : 'Mostrar' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Forgot password -->
+    <div class="forgot-row">
+      <button class="forgot-btn" type="button">¿Olvidaste la contraseña?</button>
+    </div>
+
+    <!-- Error -->
+    <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+    <!-- Login button -->
+    <button class="insta-btn-primary" (click)="submit()">Iniciar sesión</button>
+
+    <!-- Divider -->
+    <div class="or-divider"><span>O</span></div>
+
+    <!-- Facebook-style CTA -->
+    <button class="fb-btn" type="button" (click)="isRegister = true">
+      <svg class="fb-icon" viewBox="0 0 24 24" fill="#fff"><path d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01Z"/></svg>
+      Iniciar sesión con cuenta de Facebook
+    </button>
+
+  </div>
+
+  <!-- Register form -->
+  <div class="insta-register" *ngIf="isRegister">
+
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="insta-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+        </svg>
+      </div>
+      <h1 class="app-name">Social Studio</h1>
+    </div>
+
+    <p class="register-subtitle">Regístrate para ver fotos y videos de tus amigos.</p>
+
+    <!-- Error -->
+    <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+    <!-- Fields -->
+    <div class="fields-block">
+      <div class="insta-field">
+        <input class="insta-input" type="email" placeholder="Correo electrónico" [(ngModel)]="email" />
+      </div>
+      <div class="insta-field">
+        <input class="insta-input" type="text" placeholder="Nombre completo" [(ngModel)]="name" />
+      </div>
+      <div class="insta-field">
+        <input class="insta-input" type="text" placeholder="Nombre de usuario" [(ngModel)]="username" />
+      </div>
+      <div class="insta-field">
+        <input class="insta-input" type="password" placeholder="Contraseña" [(ngModel)]="password" />
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <p class="terms-text">
+      Al registrarte, aceptas nuestros <span class="terms-link">Términos</span> y la
+      <span class="terms-link">Política de privacidad</span>.
+    </p>
+
+    <!-- Register button -->
+    <button class="insta-btn-primary" (click)="submit()">Registrarse</button>
+
+  </div>
+
+  <!-- Bottom switcher -->
+  <div class="bottom-switch">
+    <span *ngIf="!isRegister">
+      ¿No tienes cuenta?
+      <button class="switch-link" type="button" (click)="isRegister = true">Regístrate.</button>
+    </span>
+    <span *ngIf="isRegister">
+      ¿Ya tienes cuenta?
+      <button class="switch-link" type="button" (click)="isRegister = false">Inicia sesión.</button>
+    </span>
+  </div>
+
+</ion-content>

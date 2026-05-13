@@ -1,0 +1,189 @@
+:host {
+  ion-content {
+    --background: #000;
+  }
+
+  .insta-toolbar {
+    --background: #000;
+    --border-color: #262626;
+  }
+
+  .insta-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    text-align: left;
+    padding-left: 4px;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #8e8e8e;
+    padding: 12px 16px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .friends-dm-section {
+    background: #000;
+    padding-bottom: 4px;
+  }
+
+  .friends-dm-bar {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px 12px 16px;
+    gap: 4px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .dm-friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+    min-width: 70px;
+  }
+
+  .dm-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #262626;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .dm-name {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: #fff;
+    text-align: center;
+    max-width: 64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: #262626;
+    margin: 4px 0;
+  }
+
+  .conv-list {
+    background: #000;
+  }
+
+  .conv-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 14px;
+    cursor: pointer;
+    border-bottom: 0.5px solid #1a1a1a;
+
+    &:active {
+      background: #111;
+    }
+  }
+
+  .conv-avatar {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #262626;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .conv-info {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .conv-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+
+  .conv-last-msg {
+    font-size: 0.82rem;
+    color: #8e8e8e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .conv-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .conv-time {
+    font-size: 0.75rem;
+    color: #8e8e8e;
+  }
+
+  .unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0095f6;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 32px;
+    text-align: center;
+    color: #fff;
+
+    .empty-icon {
+      font-size: 64px;
+      color: #8e8e8e;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    p {
+      font-size: 0.88rem;
+      color: #8e8e8e;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  .empty-conv {
+    text-align: center;
+    padding: 24px;
+    color: #8e8e8e;
+    font-size: 0.88rem;
+  }
+}

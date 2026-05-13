@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar class="insta-toolbar">
+    <ion-title class="insta-logo">Social Studio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goNotifications()" class="header-icon-btn notif-btn">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notif-dot" *ngIf="unreadNotifs > 0"></span>
+      </ion-button>
+      <ion-button (click)="goConversations()" class="header-icon-btn">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="feed-content" [scrollY]="true">
+
+  <!-- ───── Stories bar ───── -->
+  <div class="stories-bar">
+    <div class="story-item" (click)="goNewStory()">
+      <div class="story-avatar-ring my-story-ring">
+        <img [src]="myAvatarUrl()" (error)="$event.target.src='https://placehold.co/64x64'" />
+        <div class="add-story-badge">+</div>
+      </div>
+      <div class="story-label">Tu historia</div>
+    </div>
+    <div class="story-item" *ngFor="let f of friendsWithStories" (click)="goToStories(f)">
+      <div class="story-avatar-ring has-story">
+        <img [src]="f.profile?.avatar || 'https://placehold.co/64x64'"
+             (error)="$event.target.src='https://placehold.co/64x64'" />
+      </div>
+      <div class="story-label">{{ f.profile?.username || f.name }}</div>
+    </div>
+  </div>
+
+  <div class="feed-divider"></div>
+
+  <!-- ───── Skeleton loaders while loading ───── -->
+  <ng-container *ngIf="loadingPosts">
+    <app-post-skeleton *ngFor="let i of skeletonLoaders"></app-post-skeleton>
+  </ng-container>
+
+  <!-- ───── Posts ───── -->
+  <ng-container *ngIf="!loadingPosts">
+    <div class="post-card" *ngFor="let p of posts">
+
+    <!-- Post header -->
+    <div class="post-header">
+      <div class="post-avatar" (click)="goToProfile(p.user)">
+        <img [src]="imgUrl(p.user?.profile?.avatar || '')" (error)="onImgError($event)" />
+      </div>
+      <div class="post-user-info" (click)="goToProfile(p.user)">
+        <div class="post-username">{{ p.user?.profile?.username || p.user?.name }}</div>
+        <div class="post-location" *ngIf="p.location && editingPost?.id !== p.id">📍 {{ p.location }}</div>
+      </div>
+      <button class="more-btn" (click)="openPostMenu(p, $event)">
+        <ion-icon name="ellipsis-horizontal"></ion-icon>
+      </button>
+    </div>
+
+    <!-- ── Inline edit form ── -->
+    <div class="edit-form" *ngIf="editingPost?.id === p.id">
+      <textarea class="edit-caption-input" [(ngModel)]="editCaption"
+                placeholder="Descripción..." rows="3"></textarea>
+      <input class="edit-location-input" [(ngModel)]="editLocation"
+             placeholder="📍 Ubicación (opcional)" />
+      <div class="edit-actions">
+        <button class="edit-cancel-btn" (click)="cancelEdit()">Cancelar</button>
+        <button class="edit-save-btn" (click)="saveEdit()">Guardar</button>
+      </div>
+    </div>
+
+    <!-- Post image -->
+    <img class="post-image" [src]="imgUrl(p.image)" (error)="onImgError($event)"
+         *ngIf="editingPost?.id !== p.id" />
+
+    <!-- Actions row -->
+    <div class="post-actions" *ngIf="editingPost?.id !== p.id">
+      <div class="actions-left">
+        <button class="action-btn" (click)="like(p)">
+          <ion-icon [name]="p.liked ? 'heart' : 'heart-outline'" [class.liked]="p.liked"></ion-icon>
+        </button>
+        <button class="action-btn" (click)="openComments(p)">
+          <ion-icon name="chatbubble-outline"></ion-icon>
+        </button>
+        <button class="action-btn">
+          <ion-icon name="paper-plane-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="actions-right">
+        <button class="action-btn">
+          <ion-icon name="bookmark-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Likes -->
+    <div class="post-likes" *ngIf="p.likes?.length > 0 && editingPost?.id !== p.id">
+      {{ p.likes.length }} Me gusta
+    </div>
+
+    <!-- Caption -->
+    <div class="post-caption" *ngIf="p.caption && editingPost?.id !== p.id">
+      <span class="caption-user">{{ p.user?.profile?.username || p.user?.name }}</span>
+      {{ p.caption }}
+    </div>
+
+    <!-- View comments link -->
+    <div class="view-comments"
+         *ngIf="(p.comments?.length > 0 || p.comments_count > 0) && editingPost?.id !== p.id"
+         (click)="openComments(p)">
+      Ver los {{ p.comments_count || p.comments?.length }} comentarios
+    </div>
+
+    <div class="post-time" *ngIf="editingPost?.id !== p.id">hace un momento</div>
+  </div>
+  </ng-container>
+
+  <!-- Empty feed -->
+  <div class="empty-feed" *ngIf="posts.length === 0 && !loadingPosts">
+    <p>No hay publicaciones aún. ¡Sigue a alguien para ver su contenido!</p>
+  </div>
+
+  <!-- ───── Post options menu (bottom sheet) ───── -->
+  <div class="sheet-overlay" *ngIf="menuPost" (click)="closePostMenu()"></div>
+  <div class="options-sheet" *ngIf="menuPost">
+    <div class="sheet-handle"></div>
+
+    <!-- Own post options -->
+    <ng-container *ngIf="isOwnPost(menuPost)">
+      <button class="options-row" (click)="startEdit(menuPost)">
+        <ion-icon name="create-outline"></ion-icon>
+        Editar descripción
+      </button>
+      <div class="options-divider"></div>
+      <button class="options-row danger" (click)="deletePost(menuPost)">
+        <ion-icon name="trash-outline"></ion-icon>
+        Eliminar publicación
+      </button>
+    </ng-container>
+
+    <!-- Other's post options -->
+    <ng-container *ngIf="!isOwnPost(menuPost)">
+      <button class="options-row" (click)="closePostMenu()">
+        <ion-icon name="close-outline"></ion-icon>
+        No me interesa
+      </button>
+    </ng-container>
+
+    <div class="options-divider"></div>
+    <button class="options-row cancel-row" (click)="closePostMenu()">Cancelar</button>
+  </div>
+
+  <!-- ───── Comments bottom sheet ───── -->
+  <div class="sheet-overlay" *ngIf="showComments" (click)="closeComments()"></div>
+  <div class="comments-sheet" *ngIf="showComments" (click)="$event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Comentarios</div>
+    <div class="comments-scroll">
+      <div class="comment-row" *ngFor="let c of comments">
+        <div class="comment-av" (click)="goToProfile(c.user)" style="cursor:pointer">
+          <img [src]="imgUrl(c.user?.profile?.avatar || '')"
+               (error)="$event.target.src='https://placehold.co/64x64'" />
+        </div>
+        <div class="comment-body">
+          <span class="comment-user" (click)="goToProfile(c.user)" style="cursor:pointer">{{ c.user?.profile?.username || c.user?.name }}</span>
+          {{ c.content }}
+        </div>
+        <button class="comment-delete-btn" *ngIf="canDeleteComment(c)"
+                (click)="deleteComment(c)" title="Eliminar comentario">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+      <div class="no-comments" *ngIf="comments.length === 0">
+        <p>Sé el primero en comentar.</p>
+      </div>
+    </div>
+    <div class="comment-composer">
+      <div class="composer-avatar">
+        <img [src]="myAvatarUrl()" (error)="$event.target.src='https://placehold.co/64x64'" />
+      </div>
+      <ion-input [(ngModel)]="newComment"
+                 placeholder="Agrega un comentario..."
+                 class="composer-input"></ion-input>
+      <button class="publish-btn" (click)="sendComment()" [disabled]="!newComment.trim()">
+        Publicar
+      </button>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nuevo post</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed"></ion-back-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [scrollY]="true">
+  <ion-item>
+    <ion-input label="Descripción" [(ngModel)]="caption" placeholder="Escribe algo para tu publicación"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input label="Lugar" [(ngModel)]="location" placeholder="Añade una ubicación opcional"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-segment value="post" (ionChange)="isStory = $event.detail.value === 'story'">
+      <ion-segment-button value="post">
+        <ion-label>Publicación</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="story">
+        <ion-label>Historia</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+
+  <ion-text color="medium" style="display:block;margin:8px 0 16px;">
+    {{ isStory ? 'Se publicará como historia y se mostrará en la barra superior.' : 'Se publicará en tu perfil y en el feed.' }}
+  </ion-text>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" (click)="takePhoto()">
+          <ion-icon name="camera" size="large"></ion-icon>
+          Usar cámara
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" (click)="fileInput.click()">
+          <ion-icon name="file-tray" size="large"></ion-icon>
+          Elegir archivo
+        </ion-button>
+        <input #fileInput type="file" accept="image/*" hidden (change)="onFileChange($event)" />
+      </ion-col>
+      <ion-col><ion-button expand="block" (click)="upload()">
+        <ion-icon name="cloud-upload" size="large"></ion-icon>
+        Publicar
+      </ion-button></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-img *ngIf="preview" [src]="preview" style="margin-top:16px;border-radius:12px;"></ion-img>
+
+
+</ion-content>
