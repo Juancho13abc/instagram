@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: ''   // vacío = auto-detectar desde window.location.hostname
+  apiBaseUrl: 'https://instagram-drecghfhcqc3d0cn.centralus-01.azurewebsites.net/api/'
 };
 
 /*
